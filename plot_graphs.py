@@ -43,7 +43,10 @@ def main():
                              'codeberta': 'CodeBERTa',
                              'codet5': 'CodeT5',
                              'graphcodebert': 'GraphCodeBERT',
-                             'roberta': 'RoBERTa'})
+                             'roberta': 'RoBERTa',
+                             "unixcoder-unimodal": "UnixCoder-unimodal",
+                             "unixcoder": "UnixCoder",
+                             "unixcoder-nine": "UnixCoder-nine"})
     for lang in ['python', 'javascript', 'go']:
         myPlot = (
                 ggplot(df_renamed[(df_renamed['lang'] == lang) & (df_renamed['rq4'] == False)])
@@ -56,18 +59,25 @@ def main():
                                                'CodeT5',
                                                'RoBERTa',
                                                'CodeBERTa',
-                                               'CodeBERTrand'])
+                                               'CodeBERTrand',
+                                               "UnixCoder-unimodal",
+                                               "UnixCoder",
+                                               "UnixCoder-nine"])
                 + theme(text=element_text(size=16))
         )
         myPlot.save(f"myplot_{lang}.pdf", dpi=600)
+        myPlot.save(f"myplot_{lang}.png", dpi=600)
 
     for lang in ['python', 'javascript', 'go']:
-        for model in ['codebert', 'graphcodebert', 'codet5', 'codeberta', 'roberta', 'codebert-baseline']:
+        for model in ['codebert', 'graphcodebert', 'codet5', 'codeberta', 'roberta', 'codebert-baseline', "unixcoder-unimodal", "unixcoder", "unixcoder-nine"]:
             df_filtered = df[(df['lang'] == lang) & (df['model'] == model) & (df['rq4'] == False)]
-            row = df.iloc[df_filtered['f1'].idxmax()]
-            print(model, lang, row['layer'], row['precision'], row['recall'], row['f1'])
-            if model == 'codebert-baseline':
-                print(df[(df['lang'] == lang) & (df['model'] == model)])
+            try:
+                row = df.iloc[df_filtered['f1'].idxmax()]
+                print(model, lang, row['layer'], row['precision'], row['recall'], row['f1'])
+                if model == 'codebert-baseline':
+                    print(df[(df['lang'] == lang) & (df['model'] == model)])
+            except:
+                pass
 
     for lang in ['python', 'go', 'javascript']:
         myPlot = (
@@ -81,10 +91,14 @@ def main():
                                                'CodeT5',
                                                'RoBERTa',
                                                'CodeBERTa',
-                                               'CodeBERTrand'])
+                                               'CodeBERTrand',
+                                               "UnixCoder-unimodal",
+                                               "UnixCoder",
+                                               "UnixCoder-nine"])
                 + theme(text=element_text(size=16))
         )
         myPlot.save(f"myplot_rank_{lang}.pdf", dpi=600)
+        myPlot.save(f"myplot_rank_{lang}.png", dpi=600)
 
 
 if __name__ == '__main__':

@@ -25,11 +25,29 @@ We run out experiments using Python 3.9.10. In the `requirements.txt`, we includ
 mkdir grammars
 cd grammars
 git clone https://github.com/tree-sitter/tree-sitter-python.git
+cd tree-sitter-python
+git checkout rust-rust-0.19.1
+cd ..
 git clone https://github.com/tree-sitter/tree-sitter-javascript.git
+cd tree-sitter-javascript
+git checkout rust-0.19.1
+cd ..
 git clone https://github.com/tree-sitter/tree-sitter-go.git
+cd tree-sitter-go
+git checkout rust-0.19.1
+cd ..
 git clone https://github.com/tree-sitter/tree-sitter-php.git
+cd tree-sitter-php
+git checkout v0.19.0
+cd ..
 git clone https://github.com/tree-sitter/tree-sitter-ruby.git
+cd tree-sitter-ruby
+git checkout v0.19.0
+cd ..
 git clone https://github.com/tree-sitter/tree-sitter-java.git
+cd tree-sitter-java
+git checkout v0.19.1
+cd ..
 cd ..
 python src/data/build_grammars.py
 ```

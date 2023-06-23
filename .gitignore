@@ -155,3 +155,5 @@ runs
 /runs_hold_one_out/
 /runs_monolingual/
 /runs_multilingual/
+.vscode
+*~*

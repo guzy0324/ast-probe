@@ -7,6 +7,12 @@ def get_embeddings(all_inputs, all_attentions, model, layer, model_type):
     if model_type == 't5':
         with torch.no_grad():
             embs = model(input_ids=all_inputs, attention_mask=all_attentions)[1][layer][:, 1:, :]
+    elif model_type == "unilm":
+        with torch.no_grad():
+            embs = model(input_ids=all_inputs, attention_mask=all_attentions)[2][layer][:, 3:, :]
+    elif model_type == "unilm_pretrain":
+        with torch.no_grad():
+            embs = model(input_ids=all_inputs, attention_mask=all_attentions)[2][layer][:, 4:, :]
     else:
         with torch.no_grad():
             embs = model(input_ids=all_inputs, attention_mask=all_attentions)[2][layer][:, 1:, :]

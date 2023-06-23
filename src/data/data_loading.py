@@ -17,7 +17,8 @@ from .utils import download_url, unzip_file
 logger = logging.getLogger(__name__)
 
 CSN_DATASET_SPLIT_PATH = 'https://github.com/guoday/CodeBERT/raw/master/GraphCodeBERT/codesearch/dataset.zip'
-CSN_DATASET_BASE_PATH = 'https://s3.amazonaws.com/code-search-net/CodeSearchNet/v2/'
+CSN_DATASET_BASE_PATH = 'https://huggingface.co/datasets/code_search_net/resolve/main/data/'
+
 
 LANGUAGES = (
     'python',
@@ -31,9 +32,9 @@ PY_LANGUAGE = Language('grammars/languages.so', 'python')
 JS_LANGUAGE = Language('grammars/languages.so', 'javascript')
 GO_LANGUAGE = Language('grammars/languages.so', 'go')
 
-# PHP_LANGUAGE = Language('grammars/languages.so', 'php')
-# JAVA_LANGUAGE = Language('grammars/languages.so', 'java')
-# RUBY_LANGUAGE = Language('grammars/languages.so', 'ruby')
+PHP_LANGUAGE = Language('grammars/languages.so', 'php')
+JAVA_LANGUAGE = Language('grammars/languages.so', 'java')
+RUBY_LANGUAGE = Language('grammars/languages.so', 'ruby')
 
 PY_PARSER = Parser()
 PY_PARSER.set_language(PY_LANGUAGE)
@@ -42,12 +43,12 @@ JS_PARSER.set_language(JS_LANGUAGE)
 GO_PARSER = Parser()
 GO_PARSER.set_language(GO_LANGUAGE)
 
-# PHP_PARSER = Parser()
-# PHP_PARSER.set_language(PHP_LANGUAGE)
-# JAVA_PARSER = Parser()
-# JAVA_PARSER.set_language(JAVA_LANGUAGE)
-# RUBY_PARSER = Parser()
-# RUBY_PARSER.set_language(RUBY_LANGUAGE)
+PHP_PARSER = Parser()
+PHP_PARSER.set_language(PHP_LANGUAGE)
+JAVA_PARSER = Parser()
+JAVA_PARSER.set_language(JAVA_LANGUAGE)
+RUBY_PARSER = Parser()
+RUBY_PARSER.set_language(RUBY_LANGUAGE)
 
 
 def download_codesearchnet_dataset(dataset_dir):

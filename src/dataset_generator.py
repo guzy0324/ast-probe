@@ -20,8 +20,13 @@ tokenizer_t5 = AutoTokenizer.from_pretrained('Salesforce/codet5-base')
 tokenizer_codebert = AutoTokenizer.from_pretrained('microsoft/codebert-base')
 tokenizer_graphcodebert = AutoTokenizer.from_pretrained('microsoft/graphcodebert-base')
 tokenizer_codeberta = AutoTokenizer.from_pretrained('huggingface/CodeBERTa-small-v1')
+# tokenizer_unixcoder_unimodal = AutoTokenizer.from_pretrained('microsoft/unixcoder-base-unimodal')
+# tokenizer_unixcoder = AutoTokenizer.from_pretrained('microsoft/unixcoder-base')
+# tokenizer_unixcoder_nine = AutoTokenizer.from_pretrained('microsoft/unixcoder-base-nine')
 
 tokenizers = [tokenizer_roberta, tokenizer_t5, tokenizer_codebert, tokenizer_graphcodebert, tokenizer_codeberta]
+# tokenizers = [tokenizer_roberta, tokenizer_t5, tokenizer_codebert, tokenizer_graphcodebert, tokenizer_codeberta,
+#               tokenizer_unixcoder_unimodal, tokenizer_unixcoder, tokenizer_unixcoder_nine]
 
 
 def filter_samples(code, max_length, lang, parser):

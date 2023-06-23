@@ -39,7 +39,7 @@ six==1.16.0
 tokenizers==0.11.4
 -f https://download.pytorch.org/whl/cu113/torch_stable.html
 torch==1.10.2+cu113
--f https://data.pyg.org/whl/torch-1.10.2+cu113.html
+-f https://download.pytorch.org/whl/cu113/torch_stable.html
 torch-scatter
 -f https://download.pytorch.org/whl/cu113/torch_stable.html
 torchaudio==0.10.2+cu113

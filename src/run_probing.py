@@ -98,15 +98,22 @@ def run_probing_train(args: argparse.Namespace):
     valid_set = valid_set.map(lambda e: convert_to_ids(e['u'], 'u', labels_to_ids_u))
     test_set = test_set.map(lambda e: convert_to_ids(e['u'], 'u', labels_to_ids_u))
 
+    mode = None
+    two_sep = False
+    if args.model_type == "unilm":
+        mode = "<encoder-only>"
+    elif args.model_type == "unilm_pretrain":
+        mode = "<encoder-only>"
+        two_sep = True
     train_dataloader = DataLoader(dataset=train_set,
                                   batch_size=args.batch_size,
                                   shuffle=True,
-                                  collate_fn=lambda batch: collator_fn(batch, tokenizer),
+                                  collate_fn=lambda batch: collator_fn(batch, tokenizer, mode, two_sep),
                                   num_workers=8)
     valid_dataloader = DataLoader(dataset=valid_set,
                                   batch_size=args.batch_size,
                                   shuffle=False,
-                                  collate_fn=lambda batch: collator_fn(batch, tokenizer),
+                                  collate_fn=lambda batch: collator_fn(batch, tokenizer, mode, two_sep),
                                   num_workers=8)
 
     logger.info('Loading models.')
@@ -188,7 +195,7 @@ def run_probing_train(args: argparse.Namespace):
     test_dataloader = DataLoader(dataset=test_set,
                                  batch_size=args.batch_size,
                                  shuffle=False,
-                                 collate_fn=lambda batch: collator_fn(batch, tokenizer),
+                                 collate_fn=lambda batch: collator_fn(batch, tokenizer, mode, two_sep),
                                  num_workers=8)
 
     logger.info('Loading best model.')
@@ -426,10 +433,17 @@ def run_probing_test(args):
     test_set = test_set.map(lambda e: convert_to_ids(e['c'], 'c', labels_to_ids_c))
     test_set = test_set.map(lambda e: convert_to_ids(e['u'], 'u', labels_to_ids_u))
 
+    mode = None
+    two_sep = False
+    if args.model_type == "unilm":
+        mode = "<encoder-only>"
+    elif args.model_type == "unilm_pretrain":
+        mode = "<encoder-only>"
+        two_sep = True
     test_dataloader = DataLoader(dataset=test_set,
                                  batch_size=args.batch_size,
                                  shuffle=False,
-                                 collate_fn=lambda batch: collator_fn(batch, tokenizer),
+                                 collate_fn=lambda batch: collator_fn(batch, tokenizer, mode, two_sep),
                                  num_workers=8)
 
     logger.info('Loading models.')
@@ -531,15 +545,22 @@ def run_probing_direct_transfer_train(args):
     valid_set = valid_set.map(lambda e: convert_to_ids(e['u'], 'u', labels_to_ids_u))
     test_set = test_set.map(lambda e: convert_to_ids(e['u'], 'u', labels_to_ids_u))
 
+    mode = None
+    two_sep = False
+    if args.model_type == "unilm":
+        mode = "<encoder-only>"
+    elif args.model_type == "unilm_pretrain":
+        mode = "<encoder-only>"
+        two_sep = True
     train_dataloader = DataLoader(dataset=train_set,
                                   batch_size=args.batch_size,
                                   shuffle=True,
-                                  collate_fn=lambda batch: collator_fn(batch, tokenizer),
+                                  collate_fn=lambda batch: collator_fn(batch, tokenizer, mode, two_sep),
                                   num_workers=8)
     valid_dataloader = DataLoader(dataset=valid_set,
                                   batch_size=args.batch_size,
                                   shuffle=False,
-                                  collate_fn=lambda batch: collator_fn(batch, tokenizer),
+                                  collate_fn=lambda batch: collator_fn(batch, tokenizer, mode, two_sep),
                                   num_workers=8)
 
     logger.info('Loading models.')
@@ -622,7 +643,7 @@ def run_probing_direct_transfer_train(args):
     test_dataloader = DataLoader(dataset=test_set,
                                  batch_size=args.batch_size,
                                  shuffle=False,
-                                 collate_fn=lambda batch: collator_fn(batch, tokenizer),
+                                 collate_fn=lambda batch: collator_fn(batch, tokenizer, mode, two_sep),
                                  num_workers=8)
 
     logger.info('Loading best model.')

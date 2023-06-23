@@ -86,6 +86,22 @@ def __run_visualization_code_samples(lmodel, tokenizer, probe_model, code_sample
                                      parser, ids_to_labels_c, ids_to_labels_u, args):
     lmodel.eval()
     probe_model.eval()
+    mode = None
+    two_sep = False
+    if args.model_type == "unilm":
+        mode = "<encoder-only>"
+    elif args.model_type == "unilm_pretrain":
+        mode = "<encoder-only>"
+        two_sep = True
+    if mode is None:
+        prefix = [tokenizer.cls_token]
+    elif mode == "<encoder-only>":
+        if two_sep:
+            prefix = [tokenizer.cls_token, mode, tokenizer.sep_token, tokenizer.sep_token]
+        else:
+            prefix = [tokenizer.cls_token, mode, tokenizer.sep_token]
+    else:
+        raise NotImplementedError
 
     for c, code in enumerate(code_samples):
         G, pre_code = code2ast(code, parser, args.lang)
@@ -96,7 +112,7 @@ def __run_visualization_code_samples(lmodel, tokenizer, probe_model, code_sample
         # align tokens with subtokens
         to_convert, mapping = match_tokenized_to_untokenized_roberta(tokens, tokenizer)
         # generate inputs and masks
-        inputs = torch.tensor([tokenizer.convert_tokens_to_ids([tokenizer.cls_token] +
+        inputs = torch.tensor([tokenizer.convert_tokens_to_ids(prefix +
                                                                to_convert +
                                                                [tokenizer.sep_token])]).to(args.device)
         mask = torch.tensor([[1] * inputs.shape[1]]).to(args.device)
@@ -107,7 +123,7 @@ def __run_visualization_code_samples(lmodel, tokenizer, probe_model, code_sample
         for t in range(len(mapping)):
             indices += [j] * len(mapping[t])
             j += 1
-        indices += [j] * (inputs.shape[1] - 1 - len(indices))
+        indices += [j] * (inputs.shape[1] - len(prefix) - len(indices))
         alig = torch.tensor([indices]).to(args.device)
 
         # get embeddings from the lmodel
@@ -151,7 +167,7 @@ def __run_visualization_code_samples(lmodel, tokenizer, probe_model, code_sample
                 ax=axis[1])
         axis[1].set_title("Pred ast")
         plt.show()
-        plt.savefig(f'fig_{c}_{args.lang}.png')
+        plt.savefig(f'{args.run_base_path}/{args.run_name}/fig_{c}_{args.lang}.png')
 
         labels_axis = [tokens[i] + '-' + tokens[i + 1] for i in range(0, len(tokens) - 1)]
         figure, axis = plt.subplots(2, figsize=(15, 15))
@@ -165,7 +181,7 @@ def __run_visualization_code_samples(lmodel, tokenizer, probe_model, code_sample
         for ix, label in enumerate(cs_labels):
             axis[1].annotate(label, (labels_axis[ix], d_pred_current[ix]))
         plt.show()
-        plt.savefig(f'fig_{c}_{args.lang}_syn_dis.png')
+        plt.savefig(f'{args.run_base_path}/{args.run_name}/fig_{c}_{args.lang}_syn_dis.png')
 
 
 def __run_visualization_vectors(probe_model, ids_to_labels_c, ids_to_labels_u, args):
@@ -189,4 +205,4 @@ def __run_visualization_vectors(probe_model, ids_to_labels_c, ids_to_labels_u, a
         axis[1].annotate(label, (v_u_2d[ix, 0], v_u_2d[ix, 1]))
 
     plt.show()
-    plt.savefig(f'vectors.png')
+    plt.savefig(f'{args.run_base_path}/{args.run_name}/vectors.png')
